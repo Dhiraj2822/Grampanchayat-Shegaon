@@ -25,7 +25,7 @@ interface GramPanchayatDevelopmentPlanPageProps {
 const GramPanchayatDevelopmentPlanPage = ({ language, onBack }: GramPanchayatDevelopmentPlanPageProps) => {
   const [projects, setProjects] = useState<GPDPProject[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedYear, setSelectedYear] = useState<string>('2024-25');
+  const [selectedYear, setSelectedYear] = useState<string>('all');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
   const t = (en: string, mr: string) => language === 'mr' ? mr : en;
@@ -62,7 +62,9 @@ const GramPanchayatDevelopmentPlanPage = ({ language, onBack }: GramPanchayatDev
     { value: 'infrastructure', label: t('Infrastructure', 'पायाभूत सुविधा') },
   ];
 
-  const years = ['2024-25', '2023-24', '2022-23'];
+  const years = ['all', ...Array.from(new Set(
+    projects.map((project) => project.year).filter((year): year is string => Boolean(year))
+  ))].sort((a, b) => b.localeCompare(a));
 
   const statusColors = {
     proposed: 'bg-gray-100 text-gray-700',

@@ -59,7 +59,11 @@ const GramSabhaPage = ({ language, onBack }: GramSabhaPageProps) => {
     return meeting.meeting_date.startsWith(selectedYear);
   });
 
-  const years = ['all', '2024', '2023', '2022'];
+  const years = ['all', ...Array.from(new Set(
+    meetings
+      .map((meeting) => meeting.meeting_date?.slice(0, 4))
+      .filter((year): year is string => Boolean(year))
+  ))].sort((a, b) => b.localeCompare(a));
 
   return (
     <div className="min-h-screen bg-gray-50">

@@ -50,6 +50,13 @@ const GrievancePage = ({ language }: GrievancePageProps) => {
 
       if (error) throw error;
 
+      await supabase.from('cms_public_tracking').insert({
+        reference_type: 'grievance',
+        reference_number: generatedTicket,
+        status: 'Submitted',
+        subject: formData.subject
+      });
+
       setTicketNumber(generatedTicket);
       setSubmitted(true);
       

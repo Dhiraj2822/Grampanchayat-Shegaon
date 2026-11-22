@@ -42,6 +42,14 @@ const RTIPage = ({ language, onBack }: RTIPageProps) => {
 
       if (error) throw error;
 
+      await supabase.from('cms_public_tracking').insert({
+        reference_type: 'rti',
+        reference_number: appNumber,
+        status: 'submitted',
+        applicant_name: formData.applicant_name,
+        subject: formData.subject
+      });
+
       setApplicationNumber(appNumber);
       setSubmitted(true);
       setFormData({

@@ -35,6 +35,9 @@ const UserDashboard = lazy(() => import('./components/UserDashboard'));
 const AdminDashboard = lazy(() => import('./components/AdminDashboard'));
 const SuperAdminDashboard = lazy(() => import('./components/SuperAdminDashboard'));
 const ContentManagement = lazy(() => import('./components/ContentManagement'));
+const PublicSearch = lazy(() => import('./components/PublicSearch'));
+const GovernanceRecordsPage = lazy(() => import('./components/GovernanceRecordsPage'));
+const PublicTrackingPage = lazy(() => import('./components/PublicTrackingPage'));
 
 // Loading component with better error handling
 const LoadingSpinner = ({ message = 'Loading...' }: { message?: string }) => (
@@ -99,11 +102,18 @@ function App() {
   const [currentPage, setCurrentPage] = useState('home');
   const [urlParams, setUrlParams] = useState<Record<string, string>>({});
 
+  useEffect(() => {
+    document.documentElement.lang = language;
+  }, [language]);
+
   // URL to page mapping
   const urlToPageMap: Record<string, string> = {
     'home': 'home',
     'about': 'about',
     'contact': 'contact',
+    'search': 'search',
+    'progress': 'progress',
+    'tracking': 'tracking',
     'staff': 'staff',
     'gallery': 'gallery',
     'schemes': 'schemes',
@@ -450,6 +460,24 @@ function App() {
               <ContactPage language={language} />
             </Suspense>
           </div>
+        );
+      case 'search':
+        return (
+          <Suspense fallback={<LoadingSpinner />}>
+            <PublicSearch language={language} />
+          </Suspense>
+        );
+      case 'progress':
+        return (
+          <Suspense fallback={<LoadingSpinner />}>
+            <GovernanceRecordsPage language={language} />
+          </Suspense>
+        );
+      case 'tracking':
+        return (
+          <Suspense fallback={<LoadingSpinner />}>
+            <PublicTrackingPage language={language} />
+          </Suspense>
         );
       case 'staff':
         return (
