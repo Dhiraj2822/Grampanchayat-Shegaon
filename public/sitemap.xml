@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://grampanchayatshegaon.netlify.app/</loc><priority>1.0</priority></url>
+  <url><loc>https://grampanchayatshegaon.netlify.app/about</loc><priority>0.8</priority></url>
+  <url><loc>https://grampanchayatshegaon.netlify.app/contact</loc><priority>0.8</priority></url>
+  <url><loc>https://grampanchayatshegaon.netlify.app/schemes</loc><priority>0.8</priority></url>
+  <url><loc>https://grampanchayatshegaon.netlify.app/development</loc><priority>0.8</priority></url>
+  <url><loc>https://grampanchayatshegaon.netlify.app/gallery</loc><priority>0.7</priority></url>
+  <url><loc>https://grampanchayatshegaon.netlify.app/transparency/rti</loc><priority>0.8</priority></url>
+  <url><loc>https://grampanchayatshegaon.netlify.app/transparency/gram-sabha</loc><priority>0.8</priority></url>
+  <url><loc>https://grampanchayatshegaon.netlify.app/services/grievances</loc><priority>0.8</priority></url>
+  <url><loc>https://grampanchayatshegaon.netlify.app/search</loc><priority>0.5</priority></url>
+</urlset>
