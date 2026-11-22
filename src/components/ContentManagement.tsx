@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect } from 'react';
-import { Settings, Users, FileText, Image, Award, Building, Newspaper, Archive, Save, Plus, Edit, Trash, Video, X, Layout, Shield, Phone, Wallet, MapPin } from 'lucide-react';
+import { Settings, Users, FileText, Image, Award, Building, Newspaper, Archive, Save, Plus, Edit, Trash, Video, X, Layout, Shield, Phone, Wallet, MapPin, Calendar } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 
@@ -136,6 +136,140 @@ const tableFields: Record<string, { name: string; type: string; required?: boole
     { name: 'display_order', type: 'number' },
     { name: 'is_active', type: 'boolean' },
   ],
+  'cms_infrastructure_records': [
+    { name: 'title', type: 'text', required: true },
+    { name: 'title_mr', type: 'text' },
+    { name: 'title_hi', type: 'text' },
+    { name: 'category', type: 'text', required: true },
+    { name: 'description', type: 'textarea' },
+    { name: 'ward', type: 'text' },
+    { name: 'address', type: 'text' },
+    { name: 'status', type: 'text' },
+    { name: 'is_active', type: 'boolean' },
+  ],
+  'cms_education_records': [
+    { name: 'title', type: 'text', required: true },
+    { name: 'title_mr', type: 'text' },
+    { name: 'title_hi', type: 'text' },
+    { name: 'category', type: 'text' },
+    { name: 'description', type: 'textarea' },
+    { name: 'document_url', type: 'text' },
+    { name: 'is_active', type: 'boolean' },
+  ],
+  'cms_employment_records': [
+    { name: 'title', type: 'text', required: true },
+    { name: 'title_mr', type: 'text' },
+    { name: 'title_hi', type: 'text' },
+    { name: 'category', type: 'text' },
+    { name: 'organization', type: 'text' },
+    { name: 'location', type: 'text' },
+    { name: 'description', type: 'textarea' },
+    { name: 'application_url', type: 'text' },
+    { name: 'deadline', type: 'date' },
+    { name: 'is_active', type: 'boolean' },
+  ],
+  'cms_environment_records': [
+    { name: 'title', type: 'text', required: true },
+    { name: 'title_mr', type: 'text' },
+    { name: 'title_hi', type: 'text' },
+    { name: 'category', type: 'text' },
+    { name: 'description', type: 'textarea' },
+    { name: 'metric_value', type: 'number' },
+    { name: 'metric_unit', type: 'text' },
+    { name: 'record_date', type: 'date' },
+    { name: 'image_url', type: 'image_upload' },
+    { name: 'is_active', type: 'boolean' },
+  ],
+  'cms_official_hierarchy': [
+    { name: 'name', type: 'text', required: true },
+    { name: 'name_mr', type: 'text' },
+    { name: 'name_hi', type: 'text' },
+    { name: 'designation', type: 'text', required: true },
+    { name: 'designation_mr', type: 'text' },
+    { name: 'designation_hi', type: 'text' },
+    { name: 'department', type: 'text' },
+    { name: 'photo_url', type: 'image_upload' },
+    { name: 'phone', type: 'text' },
+    { name: 'email', type: 'email' },
+    { name: 'display_order', type: 'number' },
+    { name: 'is_active', type: 'boolean' },
+  ],
+  'cms_ward_statistics': [
+    { name: 'ward_number', type: 'text', required: true },
+    { name: 'population', type: 'number' },
+    { name: 'households', type: 'number' },
+    { name: 'literacy_percent', type: 'number' },
+    { name: 'water_coverage_percent', type: 'number' },
+    { name: 'electricity_coverage_percent', type: 'number' },
+    { name: 'sanitation_percent', type: 'number' },
+    { name: 'record_year', type: 'text' },
+    { name: 'is_active', type: 'boolean' },
+  ],
+  'cms_events': [
+    { name: 'title', type: 'text', required: true },
+    { name: 'title_mr', type: 'text' },
+    { name: 'title_hi', type: 'text' },
+    { name: 'event_type', type: 'text' },
+    { name: 'location', type: 'text' },
+    { name: 'start_at', type: 'datetime' },
+    { name: 'end_at', type: 'datetime' },
+    { name: 'document_url', type: 'text' },
+    { name: 'is_active', type: 'boolean' },
+  ],
+  'cms_emergency_contacts': [
+    { name: 'name', type: 'text', required: true },
+    { name: 'name_mr', type: 'text' },
+    { name: 'name_hi', type: 'text' },
+    { name: 'organization', type: 'text' },
+    { name: 'phone', type: 'text', required: true },
+    { name: 'alternate_phone', type: 'text' },
+    { name: 'address', type: 'text' },
+    { name: 'hours', type: 'text' },
+    { name: 'display_order', type: 'number' },
+    { name: 'is_active', type: 'boolean' },
+  ],
+  'cms_impact_metrics': [
+    { name: 'metric_key', type: 'text', required: true },
+    { name: 'metric_label', type: 'text', required: true },
+    { name: 'metric_label_mr', type: 'text' },
+    { name: 'metric_label_hi', type: 'text' },
+    { name: 'metric_value', type: 'number' },
+    { name: 'metric_unit', type: 'text' },
+    { name: 'record_year', type: 'text' },
+    { name: 'display_order', type: 'number' },
+    { name: 'is_active', type: 'boolean' },
+  ],
+  'cms_sankalp_pledges': [
+    { name: 'pledge_number', type: 'number', required: true },
+    { name: 'title', type: 'text', required: true },
+    { name: 'title_mr', type: 'text' },
+    { name: 'title_hi', type: 'text' },
+    { name: 'description', type: 'textarea' },
+    { name: 'target_value', type: 'number' },
+    { name: 'achieved_value', type: 'number' },
+    { name: 'metric_unit', type: 'text' },
+    { name: 'is_active', type: 'boolean' },
+  ],
+  'cms_partnerships': [
+    { name: 'name', type: 'text', required: true },
+    { name: 'partner_type', type: 'text' },
+    { name: 'description', type: 'textarea' },
+    { name: 'contact_name', type: 'text' },
+    { name: 'phone', type: 'text' },
+    { name: 'email', type: 'email' },
+    { name: 'website_url', type: 'text' },
+    { name: 'is_active', type: 'boolean' },
+  ],
+  'cms_beneficiary_stories': [
+    { name: 'title', type: 'text', required: true },
+    { name: 'beneficiary_name', type: 'text' },
+    { name: 'story', type: 'textarea' },
+    { name: 'story_mr', type: 'textarea' },
+    { name: 'story_hi', type: 'textarea' },
+    { name: 'scheme_name', type: 'text' },
+    { name: 'image_url', type: 'image_upload' },
+    { name: 'is_active', type: 'boolean' },
+  ],
 };
 
 const ContentManagement: React.FC<ContentManagementProps> = ({ onNavigate, initialSection }) => {
@@ -167,6 +301,18 @@ const ContentManagement: React.FC<ContentManagementProps> = ({ onNavigate, initi
   const [contactInfo, setContactInfo] = useState<any[]>([]);
   const [forms, setForms] = useState<any[]>([]);
   const [videoGallery, setVideoGallery] = useState<any[]>([]);
+  const [infrastructureRecords, setInfrastructureRecords] = useState<any[]>([]);
+  const [educationRecords, setEducationRecords] = useState<any[]>([]);
+  const [employmentRecords, setEmploymentRecords] = useState<any[]>([]);
+  const [environmentRecords, setEnvironmentRecords] = useState<any[]>([]);
+  const [officialHierarchy, setOfficialHierarchy] = useState<any[]>([]);
+  const [wardStatistics, setWardStatistics] = useState<any[]>([]);
+  const [events, setEvents] = useState<any[]>([]);
+  const [emergencyContacts, setEmergencyContacts] = useState<any[]>([]);
+  const [impactMetrics, setImpactMetrics] = useState<any[]>([]);
+  const [sankalpPledges, setSankalpPledges] = useState<any[]>([]);
+  const [partnerships, setPartnerships] = useState<any[]>([]);
+  const [beneficiaryStories, setBeneficiaryStories] = useState<any[]>([]);
 
   const [editingItem, setEditingItem] = useState<any>(null);
   const [showAddForm, setShowAddForm] = useState(false);
@@ -252,12 +398,56 @@ const ContentManagement: React.FC<ContentManagementProps> = ({ onNavigate, initi
         case 'contact-info':
           await loadContactInfo();
           break;
+        case 'infrastructure':
+          await loadGovernanceTable('cms_infrastructure_records', setInfrastructureRecords);
+          break;
+        case 'education':
+          await loadGovernanceTable('cms_education_records', setEducationRecords);
+          break;
+        case 'employment':
+          await loadGovernanceTable('cms_employment_records', setEmploymentRecords);
+          break;
+        case 'environment':
+          await loadGovernanceTable('cms_environment_records', setEnvironmentRecords);
+          break;
+        case 'hierarchy':
+          await loadGovernanceTable('cms_official_hierarchy', setOfficialHierarchy);
+          break;
+        case 'wards':
+          await loadGovernanceTable('cms_ward_statistics', setWardStatistics);
+          break;
+        case 'events':
+          await loadGovernanceTable('cms_events', setEvents);
+          break;
+        case 'emergency':
+          await loadGovernanceTable('cms_emergency_contacts', setEmergencyContacts);
+          break;
+        case 'impact':
+          await loadGovernanceTable('cms_impact_metrics', setImpactMetrics);
+          break;
+        case 'pledges':
+          await loadGovernanceTable('cms_sankalp_pledges', setSankalpPledges);
+          break;
+        case 'partnerships':
+          await loadGovernanceTable('cms_partnerships', setPartnerships);
+          break;
+        case 'stories':
+          await loadGovernanceTable('cms_beneficiary_stories', setBeneficiaryStories);
+          break;
       }
     } catch (error) {
       console.error('Error loading content:', error);
     } finally {
       setContentLoading(false);
     }
+  };
+
+  const loadGovernanceTable = async (
+    tableName: string,
+    setRows: React.Dispatch<React.SetStateAction<any[]>>
+  ) => {
+    const { data, error } = await supabase.from(tableName).select('*').order('created_at', { ascending: false });
+    if (!error && data) setRows(data);
   };
 
   const loadWebsiteSettings = async () => {
@@ -988,6 +1178,18 @@ const ContentManagement: React.FC<ContentManagementProps> = ({ onNavigate, initi
             />
           </div>
           <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Village Name (हिन्दी)</label>
+            <input
+              type="text"
+              value={websiteSettings.BASIC_INFO?.village_name_hi || ''}
+              onChange={(e) => setWebsiteSettings({
+                ...websiteSettings,
+                BASIC_INFO: { ...websiteSettings.BASIC_INFO, village_name_hi: e.target.value }
+              })}
+              className="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            />
+          </div>
+          <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">District (English)</label>
             <input
               type="text"
@@ -1193,6 +1395,18 @@ const ContentManagement: React.FC<ContentManagementProps> = ({ onNavigate, initi
               onChange={(e) => setWebsiteSettings({
                 ...websiteSettings,
                 CONTACT: { ...websiteSettings.CONTACT, office_address_mr: e.target.value }
+              })}
+              rows={3}
+              className="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Office Address (हिन्दी)</label>
+            <textarea
+              value={websiteSettings.CONTACT?.office_address_hi || ''}
+              onChange={(e) => setWebsiteSettings({
+                ...websiteSettings,
+                CONTACT: { ...websiteSettings.CONTACT, office_address_hi: e.target.value }
               })}
               rows={3}
               className="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
@@ -1845,6 +2059,18 @@ const ContentManagement: React.FC<ContentManagementProps> = ({ onNavigate, initi
                     { id: 'forms', name: 'Downloads', icon: Archive },
                     { id: 'committees', name: 'Committees', icon: Users },
                     { id: 'budget', name: 'Budget', icon: Wallet },
+                    { id: 'infrastructure', name: 'Infrastructure & Facilities', icon: Building },
+                    { id: 'education', name: 'Education & Youth', icon: Users },
+                    { id: 'employment', name: 'Employment & Skills', icon: Award },
+                    { id: 'environment', name: 'Environment & Sustainability', icon: Building },
+                    { id: 'hierarchy', name: 'Government Hierarchy', icon: Users },
+                    { id: 'wards', name: 'Ward Statistics', icon: MapPin },
+                    { id: 'events', name: 'Events & Calendar', icon: Calendar },
+                    { id: 'emergency', name: 'Emergency Contacts', icon: Phone },
+                    { id: 'impact', name: 'Impact Dashboard', icon: Award },
+                    { id: 'pledges', name: 'Sankalp Tracker', icon: Award },
+                    { id: 'partnerships', name: 'Partners & Volunteers', icon: Users },
+                    { id: 'stories', name: 'Beneficiary Stories', icon: Users },
                   ].map((item) => {
                     const Icon = item.icon;
                     return (
@@ -1890,6 +2116,18 @@ const ContentManagement: React.FC<ContentManagementProps> = ({ onNavigate, initi
                 {activeSection === 'forms' && renderDataTable(forms, ['document_name', 'category', 'file_url'], 'cms_downloads')}
                 {activeSection === 'committees' && renderDataTable(committees, ['name', 'committee_type', 'formation_date', 'is_active'], 'cms_committees')}
                 {activeSection === 'budget' && renderDataTable(budgetItems, ['financial_year', 'category', 'head_name', 'budgeted_amount', 'spent_amount', 'is_active'], 'cms_budget_items')}
+                {activeSection === 'infrastructure' && renderDataTable(infrastructureRecords, ['title', 'title_mr', 'title_hi', 'category', 'ward', 'status', 'is_active'], 'cms_infrastructure_records')}
+                {activeSection === 'education' && renderDataTable(educationRecords, ['title', 'title_mr', 'title_hi', 'category', 'document_url', 'is_active'], 'cms_education_records')}
+                {activeSection === 'employment' && renderDataTable(employmentRecords, ['title', 'title_mr', 'title_hi', 'category', 'organization', 'deadline', 'is_active'], 'cms_employment_records')}
+                {activeSection === 'environment' && renderDataTable(environmentRecords, ['title', 'title_mr', 'title_hi', 'category', 'metric_value', 'metric_unit', 'record_date', 'is_active'], 'cms_environment_records')}
+                {activeSection === 'hierarchy' && renderDataTable(officialHierarchy, ['name', 'name_mr', 'name_hi', 'designation', 'department', 'display_order', 'is_active'], 'cms_official_hierarchy')}
+                {activeSection === 'wards' && renderDataTable(wardStatistics, ['ward_number', 'population', 'households', 'literacy_percent', 'water_coverage_percent', 'electricity_coverage_percent', 'sanitation_percent', 'record_year', 'is_active'], 'cms_ward_statistics')}
+                {activeSection === 'events' && renderDataTable(events, ['title', 'title_mr', 'title_hi', 'event_type', 'location', 'start_at', 'end_at', 'is_active'], 'cms_events')}
+                {activeSection === 'emergency' && renderDataTable(emergencyContacts, ['name', 'name_mr', 'name_hi', 'organization', 'phone', 'alternate_phone', 'display_order', 'is_active'], 'cms_emergency_contacts')}
+                {activeSection === 'impact' && renderDataTable(impactMetrics, ['metric_key', 'metric_label', 'metric_label_mr', 'metric_label_hi', 'metric_value', 'metric_unit', 'record_year', 'display_order', 'is_active'], 'cms_impact_metrics')}
+                {activeSection === 'pledges' && renderDataTable(sankalpPledges, ['pledge_number', 'title', 'title_mr', 'title_hi', 'target_value', 'achieved_value', 'metric_unit', 'is_active'], 'cms_sankalp_pledges')}
+                {activeSection === 'partnerships' && renderDataTable(partnerships, ['name', 'partner_type', 'contact_name', 'phone', 'email', 'website_url', 'is_active'], 'cms_partnerships')}
+                {activeSection === 'stories' && renderDataTable(beneficiaryStories, ['title', 'beneficiary_name', 'scheme_name', 'story', 'image_url', 'is_active'], 'cms_beneficiary_stories')}
               </div>
             )}
           </div>
