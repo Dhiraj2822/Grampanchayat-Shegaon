@@ -542,7 +542,7 @@ export interface AdminUser {
 }
 
 // ===== LANGUAGE SUPPORT =====
-export type Language = 'en' | 'mr'; // English and Marathi
+export type Language = 'en' | 'mr' | 'hi'; // English, Marathi and Hindi
 
 export interface BilingualText {
   en: string;

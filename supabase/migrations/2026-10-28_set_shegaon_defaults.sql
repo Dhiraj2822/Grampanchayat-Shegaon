@@ -6,6 +6,7 @@ INSERT INTO public.cms_website_settings (setting_type, setting_key, setting_valu
 VALUES
   ('BASIC_INFO', 'village_name', 'Shegaon'),
   ('BASIC_INFO', 'village_name_mr', 'शेगाव'),
+  ('BASIC_INFO', 'village_name_hi', 'शेगांव'),
   ('BASIC_INFO', 'population', '2241'),
   ('BASIC_INFO', 'general_population', '1541'),
   ('BASIC_INFO', 'sc_population', '301'),

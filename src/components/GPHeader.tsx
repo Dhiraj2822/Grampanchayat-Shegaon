@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect, useRef } from 'react';
-import { Home, Users, FileText, Building2, Award, Info, ImageIcon, Phone, LogIn, LogOut, User, Settings, Menu, X, Globe, Crown } from 'lucide-react';
+import { Home, Users, FileText, Building2, Award, Info, ImageIcon, Phone, LogIn, LogOut, User, Settings, Menu, X, Globe, Crown, Search } from 'lucide-react';
 import { Language } from '../types';
 import { useAuth } from '../contexts/AuthContext';
 import { useWebsiteSettings } from '../contexts/WebsiteSettingsContext';
@@ -23,17 +23,23 @@ const GPHeader = ({ language, onLanguageChange, onNavigate }: GPHeaderProps) => 
   const { settings } = useWebsiteSettings();
 
   // Get village name based on language
-  const villageName = language === 'mr' 
+  const villageName = language === 'mr'
     ? (settings.village_name_mr || settings.village_name || 'गाव')
-    : (settings.village_name || 'Village');
+    : language === 'hi'
+      ? (settings.village_name_hi || settings.village_name_mr || settings.village_name || 'गांव')
+      : (settings.village_name || 'Village');
   
   const districtName = language === 'mr'
     ? (settings.district_mr || settings.district || 'जिल्हा')
-    : (settings.district || 'District');
+    : language === 'hi'
+      ? (settings.district_hi || settings.district_mr || settings.district || 'जिला')
+      : (settings.district || 'District');
     
   const talukaName = language === 'mr'
     ? (settings.taluka_mr || settings.taluka || 'तालुका')
-    : (settings.taluka || 'Taluka');
+    : language === 'hi'
+      ? (settings.taluka_hi || settings.taluka_mr || settings.taluka || 'तालुका')
+      : (settings.taluka || 'Taluka');
 
   // Close user menu when clicking outside
   useEffect(() => {
@@ -55,7 +61,8 @@ const GPHeader = ({ language, onLanguageChange, onNavigate }: GPHeaderProps) => 
     }
   };
 
-  const t = (en: string, mr: string) => language === 'mr' ? mr : en;
+  const t = (en: string, mr: string, hi?: string) =>
+    language === 'mr' ? mr : language === 'hi' ? (hi || mr || en) : en;
 
   const isDesktopViewport = () => window.matchMedia('(min-width: 768px)').matches;
 
@@ -105,6 +112,7 @@ const GPHeader = ({ language, onLanguageChange, onNavigate }: GPHeaderProps) => 
         // Hide 'Apply for Certificates' option for admin or super_admin users
         ...(profile?.role === 'admin' || profile?.role === 'super_admin' ? [] : [{ label: t('Apply for Certificates', 'प्रमाणपत्रे'), path: '/services/certificates' }]),
         { label: t('Submit Grievance', 'तक्रारी'), path: '/services/grievances' },
+        { label: t('Track Application', 'अर्जाची स्थिती', 'आवेदन स्थिति'), path: '/tracking' },
         { label: t('Download Forms', 'फॉर्म'), path: '/services/forms' },
       ],
     },
@@ -150,6 +158,12 @@ const GPHeader = ({ language, onLanguageChange, onNavigate }: GPHeaderProps) => 
       ],
     },
     {
+      id: 'progress',
+      label: t('Village Progress', 'गाव प्रगती', 'गांव की प्रगति'),
+      icon: Award,
+      path: '/progress',
+    },
+    {
       id: 'contact',
       label: t('Contact Us', 'संपर्क'),
       icon: Phone,
@@ -170,11 +184,19 @@ const GPHeader = ({ language, onLanguageChange, onNavigate }: GPHeaderProps) => 
           </div>
           <div className="flex items-center gap-4">
             <button
-              onClick={() => onLanguageChange(language === 'en' ? 'mr' : 'en')}
+              onClick={() => handleNavigation('search')}
+              className="flex items-center gap-1 px-3 py-1 bg-white/10 hover:bg-white/20 rounded transition"
+              aria-label={t('Search', 'शोध', 'खोज')}
+            >
+              <Search size={16} />
+              <span className="hidden md:inline">{t('Search', 'शोध', 'खोज')}</span>
+            </button>
+            <button
+              onClick={() => onLanguageChange(language === 'en' ? 'mr' : language === 'mr' ? 'hi' : 'en')}
               className="flex items-center gap-1 px-3 py-1 bg-white/10 hover:bg-white/20 rounded transition"
             >
               <Globe size={16} />
-              <span>{language === 'en' ? 'English' : 'मराठी'}</span>
+              <span>{language === 'en' ? 'English' : language === 'mr' ? 'मराठी' : 'हिन्दी'}</span>
             </button>
             
             {user ? (

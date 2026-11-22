@@ -6,12 +6,16 @@ interface WebsiteSettings {
   // Basic Info
   village_name: string;
   village_name_mr: string;
+  village_name_hi: string;
   district: string;
   district_mr: string;
+  district_hi: string;
   taluka: string;
   taluka_mr: string;
+  taluka_hi: string;
   state: string;
   state_mr: string;
+  state_hi: string;
   pincode: string;
   population: string;
   general_population: string;
@@ -32,6 +36,7 @@ interface WebsiteSettings {
   // Contact
   office_address: string;
   office_address_mr: string;
+  office_address_hi: string;
   phone_number: string;
   email: string;
   office_hours: string;
@@ -80,12 +85,16 @@ interface WebsiteSettingsContextType {
 const defaultSettings: WebsiteSettings = {
   village_name: 'Shegaon',
   village_name_mr: 'शेगाव',
+  village_name_hi: 'शेगांव',
   district: 'District',
   district_mr: 'जिल्हा',
+  district_hi: 'जिला',
   taluka: 'Taluka',
   taluka_mr: 'तालुका',
+  taluka_hi: 'तालुका',
   state: 'Maharashtra',
   state_mr: 'महाराष्ट्र',
+  state_hi: 'महाराष्ट्र',
   pincode: '',
   population: '2241',
   general_population: '1541',
@@ -102,6 +111,7 @@ const defaultSettings: WebsiteSettings = {
   longitude: '',
   office_address: '',
   office_address_mr: '',
+  office_address_hi: '',
   phone_number: '8999939667',
   email: 'grampanchayatshegaon908@gmail.com',
   office_hours: '',

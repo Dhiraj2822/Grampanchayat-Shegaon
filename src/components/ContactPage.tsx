@@ -11,6 +11,14 @@ interface ContactPageProps {
 const ContactPage = ({ language }: ContactPageProps) => {
   const [contacts, setContacts] = useState<ContactInfo[]>([]);
   const [loading, setLoading] = useState(true);
+  const [feedback, setFeedback] = useState({
+    name: '',
+    phone: '',
+    email: '',
+    subject: '',
+    message: ''
+  });
+  const [feedbackStatus, setFeedbackStatus] = useState<'idle' | 'saving' | 'success' | 'error'>('idle');
   const { settings } = useWebsiteSettings();
 
   const t = (en: string, mr: string) => language === 'mr' ? mr : en;
@@ -18,7 +26,9 @@ const ContactPage = ({ language }: ContactPageProps) => {
   // Get dynamic values
   const villageName = language === 'mr' 
     ? (settings.village_name_mr || settings.village_name || 'गाव')
-    : (settings.village_name || 'Village');
+    : language === 'hi'
+      ? (settings.village_name_hi || settings.village_name_mr || settings.village_name || 'गांव')
+      : (settings.village_name || 'Village');
   const noDataLabel = t('No data available', 'माहिती उपलब्ध नाही');
 
   useEffect(() => {
@@ -100,7 +110,9 @@ const ContactPage = ({ language }: ContactPageProps) => {
               <p className="font-semibold">
                 {language === 'mr'
                   ? (settings.office_address_mr || settings.office_address || noDataLabel)
-                  : (settings.office_address || noDataLabel)}
+                  : language === 'hi'
+                    ? (settings.office_address_hi || settings.office_address_mr || settings.office_address || noDataLabel)
+                    : (settings.office_address || noDataLabel)}
               </p>
             </div>
           </div>
@@ -276,9 +288,11 @@ const ContactPage = ({ language }: ContactPageProps) => {
             )}
           </div>
           <p className="text-center text-gray-600 mt-4">
-            {language === 'mr' 
+            {language === 'mr'
               ? (settings.office_address_mr || settings.office_address || noDataLabel)
-              : (settings.office_address || noDataLabel)}
+              : language === 'hi'
+                ? (settings.office_address_hi || settings.office_address_mr || settings.office_address || noDataLabel)
+                : (settings.office_address || noDataLabel)}
           </p>
         </div>
       </div>
@@ -289,7 +303,30 @@ const ContactPage = ({ language }: ContactPageProps) => {
           {t('Send Us a Message', 'आम्हाला संदेश पाठवा')}
         </h2>
         
-        <form className="max-w-2xl mx-auto space-y-6">
+        <form
+          className="max-w-2xl mx-auto space-y-6"
+          onSubmit={async (event) => {
+            event.preventDefault();
+            setFeedbackStatus('saving');
+            const { error } = await supabase
+              .from('cms_feedback_submissions')
+              .insert({
+                name: feedback.name,
+                phone: feedback.phone || null,
+                email: feedback.email || null,
+                subject: feedback.subject,
+                message: feedback.message,
+                language
+              });
+            if (error) {
+              console.error('Failed to submit feedback:', error);
+              setFeedbackStatus('error');
+              return;
+            }
+            setFeedbackStatus('success');
+            setFeedback({ name: '', phone: '', email: '', subject: '', message: '' });
+          }}
+        >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="block text-gray-700 font-semibold mb-2">
@@ -298,6 +335,8 @@ const ContactPage = ({ language }: ContactPageProps) => {
               <input
                 type="text"
                 required
+                value={feedback.name}
+                onChange={(e) => setFeedback({ ...feedback, name: e.target.value })}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                 placeholder={t('Enter your name', 'तुमचे नाव टाका')}
               />
@@ -311,6 +350,8 @@ const ContactPage = ({ language }: ContactPageProps) => {
                 type="tel"
                 required
                 pattern="[0-9]{10}"
+                value={feedback.phone}
+                onChange={(e) => setFeedback({ ...feedback, phone: e.target.value })}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                 placeholder="9876543210"
               />
@@ -323,6 +364,8 @@ const ContactPage = ({ language }: ContactPageProps) => {
             </label>
             <input
               type="email"
+              value={feedback.email}
+              onChange={(e) => setFeedback({ ...feedback, email: e.target.value })}
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
               placeholder="your.email@example.com"
             />
@@ -335,6 +378,8 @@ const ContactPage = ({ language }: ContactPageProps) => {
             <input
               type="text"
               required
+              value={feedback.subject}
+              onChange={(e) => setFeedback({ ...feedback, subject: e.target.value })}
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
               placeholder={t('What is this regarding?', 'हे कशाबद्दल आहे?')}
             />
@@ -347,6 +392,8 @@ const ContactPage = ({ language }: ContactPageProps) => {
             <textarea
               required
               rows={5}
+              value={feedback.message}
+              onChange={(e) => setFeedback({ ...feedback, message: e.target.value })}
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
               placeholder={t('Type your message here...', 'तुमचा संदेश येथे टाका...')}
             />
@@ -365,10 +412,23 @@ const ContactPage = ({ language }: ContactPageProps) => {
           <div className="text-center">
             <button
               type="submit"
+              disabled={feedbackStatus === 'saving'}
               className="bg-gradient-to-r from-green-600 to-green-700 text-white px-12 py-4 rounded-lg hover:from-green-700 hover:to-green-800 transition font-bold text-lg shadow-lg"
             >
-              {t('Send Message', 'संदेश पाठवा')} 📧
+              {feedbackStatus === 'saving'
+                ? t('Sending...', 'पाठवत आहे...')
+                : t('Send Message', 'संदेश पाठवा')}
             </button>
+            {feedbackStatus === 'success' && (
+              <p className="mt-4 text-green-700 font-semibold">
+                {t('Your message was submitted successfully.', 'तुमचा संदेश यशस्वीरित्या पाठवला आहे.')}
+              </p>
+            )}
+            {feedbackStatus === 'error' && (
+              <p className="mt-4 text-red-700 font-semibold">
+                {t('Submission failed. Please try again.', 'संदेश पाठवता आला नाही. कृपया पुन्हा प्रयत्न करा.')}
+              </p>
+            )}
           </div>
         </form>
       </div>

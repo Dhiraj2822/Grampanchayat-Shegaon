@@ -18,7 +18,9 @@ const GPFooter = ({ language, onNavigate }: GPFooterProps) => {
   
   const officeAddress = language === 'mr'
     ? (settings.office_address_mr || settings.office_address || '')
-    : (settings.office_address || '');
+    : language === 'hi'
+      ? (settings.office_address_hi || settings.office_address || '')
+      : (settings.office_address || '');
   const noDataLabel = t('No data available', 'माहिती उपलब्ध नाही');
 
   const handleLinkClick = (path: string) => {
